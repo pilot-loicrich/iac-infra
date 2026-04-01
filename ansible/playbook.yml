@@ -1,0 +1,7 @@
+---
+- name: Configuration du serveur web
+  hosts: web
+  become: true
+
+  roles:
+    - common
