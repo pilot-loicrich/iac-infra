@@ -1,7 +1,7 @@
----
+﻿---
 - name: Mise a jour des paquets
   apt:
-    update_cache: yes
+    update_cache: true
 
 - name: Installation de Nginx
   apt:
@@ -12,4 +12,4 @@
   service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
