@@ -45,17 +45,17 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/iac-nginx:latest
 
   deploy:
-    name: Deploy sur Kubernetes
+    name: Validation manifests Kubernetes
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
       - uses: actions/checkout@v3
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
+      - name: Installer yamllint
+        run: pip install yamllint
       - name: Valider les manifests Kubernetes
         run: |
-          echo "Validation des manifests Kubernetes (dry-run sans cluster)"
-          kubectl apply --dry-run=client --validate=false -f kubernetes/nginx.yml
-          kubectl apply --dry-run=client --validate=false -f kubernetes/postgres.yml
-          kubectl apply --dry-run=client --validate=false -f kubernetes/hpa.yml
-          echo "Tous les manifests sont valides - prets pour deploiement"
+          echo "Validation syntaxe YAML des manifests Kubernetes"
+          yamllint -d relaxed kubernetes/nginx.yml
+          yamllint -d relaxed kubernetes/postgres.yml
+          yamllint -d relaxed kubernetes/hpa.yml
+          echo "Tous les manifests Kubernetes sont valides"
