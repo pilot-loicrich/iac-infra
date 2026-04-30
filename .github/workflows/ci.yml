@@ -44,7 +44,7 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/iac-nginx:latest
 
-  deploy:
+  validate-k8s:
     name: Validation manifests Kubernetes
     runs-on: ubuntu-latest
     needs: build-and-push
