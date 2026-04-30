@@ -1,0 +1,29 @@
+﻿groups:
+  - name: infrastructure_alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU eleve sur {{ $labels.instance }}"
+          description: "CPU > 80% depuis 2 minutes"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Memoire critique sur {{ $labels.instance }}"
+          description: "RAM > 85% utilisee"
+
+      - alert: NginxDown
+        expr: up{job="node_exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Infrastructure inaccessible"
+          description: "Le node_exporter ne repond plus depuis 1 minute"
