@@ -1,13 +1,9 @@
-version: '3.8'
-
-services:
+﻿services:
   db:
     image: postgres:15
     container_name: test_db
-    environment:
-      POSTGRES_DB: testdb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+    env_file:
+      - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./docker/backups:/backups

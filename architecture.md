@@ -1,9 +1,9 @@
-# Schéma d'Architecture - Infrastructure IaC
+# Schï¿½ma d'Architecture - Infrastructure IaC
 
 ## Vue globale
 `
 +---------------------------+
-|     Machine Hôte          |
+|     Machine Hï¿½te          |
 |     Windows 11            |
 |                           |
 |  +---------------------+  |
@@ -22,34 +22,34 @@
 +---------------------------+
 `
 
-## Outils utilisés
+## Outils utilisï¿½s
 
-| Outil | Rôle |
+| Outil | Rï¿½le |
 |---|---|
-| Vagrant 2.4.9 | Création et gestion des VMs |
+| Vagrant 2.4.9 | Crï¿½ation et gestion des VMs |
 | VirtualBox 7.2 | Hyperviseur |
-| Ansible | Configuration automatisée (Nginx) |
+| Ansible | Configuration automatisï¿½e (Nginx) |
 | Terraform 1.14 | Infrastructure as Code |
 | GitHub Actions | Pipeline CI (lint YAML + validate) |
 
-## Réseau
+## Rï¿½seau
 
 | Composant | IP | Port |
 |---|---|---|
-| Machine hôte | 192.168.56.1 | - |
+| Machine hï¿½te | 192.168.56.1 | - |
 | VM web | 192.168.56.10 | 80 (HTTP) |
 
-## Flux de déploiement
+## Flux de dï¿½ploiement
 `
 1. terraform init/apply  ?  Initialise l'IaC
-2. vagrant up            ?  Crée la VM Ubuntu
-3. ansible playbook      ?  Installe et démarre Nginx
+2. vagrant up            ?  Crï¿½e la VM Ubuntu
+3. ansible playbook      ?  Installe et dï¿½marre Nginx
 4. GitHub Actions CI     ?  Lint YAML + Terraform validate
 `
 
-## Compétences RNCP couvertes (BC01)
+## Compï¿½tences RNCP couvertes (BC01)
 
 - CP1 : Script Bash d'automatisation (scripts/setup.sh)
-- CP2 : Déploiement infra avec Ansible + Terraform
-- CP3 : Sécurisation (pare-feu UFW, SSH)
+- CP2 : Dï¿½ploiement infra avec Ansible + Terraform
+- CP3 : Sï¿½curisation (pare-feu UFW, SSH)
 - CP4 : Mise en production (vagrant up fonctionnel)
