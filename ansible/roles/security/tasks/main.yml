@@ -1,0 +1,68 @@
+﻿---
+- name: Installation UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: Politique par defaut - refuser entrant
+  ufw:
+    default: deny
+    direction: incoming
+
+- name: Politique par defaut - autoriser sortant
+  ufw:
+    default: allow
+    direction: outgoing
+
+- name: Autoriser SSH
+  ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Autoriser HTTP
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Autoriser HTTPS
+  ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+
+- name: Activer UFW
+  ufw:
+    state: enabled
+
+- name: Desactiver connexion root SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+
+- name: Desactiver authentification par mot de passe SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+
+- name: Redemarrer SSH
+  service:
+    name: ssh
+    state: restarted
+
+- name: Installation unattended-upgrades
+  apt:
+    name: unattended-upgrades
+    state: present
+
+- name: Activer unattended-upgrades
+  service:
+    name: unattended-upgrades
+    state: started
+    enabled: true
