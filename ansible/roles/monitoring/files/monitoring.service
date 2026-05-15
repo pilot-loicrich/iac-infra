@@ -1,0 +1,15 @@
+[Unit]
+Description=Monitoring Stack (Prometheus + Grafana + Alertmanager + node-exporter)
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/monitoring
+ExecStart=/usr/bin/docker compose -f docker-compose.monitoring.yml up -d
+ExecStop=/usr/bin/docker compose -f docker-compose.monitoring.yml down
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
