@@ -17,7 +17,9 @@
 
 - name: Add Docker repository
   apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    repo: >-
+      deb [arch=amd64] https://download.docker.com/linux/ubuntu
+      {{ ansible_distribution_release }} stable
     state: present
     update_cache: true
 
@@ -61,36 +63,23 @@
 
 - name: Copy Grafana datasource provisioning
   copy:
-    src: "{{ playbook_dir }}/../monitoring/grafana/provisioning/datasources/prometheus.yml"
+    src: >-
+      {{ playbook_dir }}/../monitoring/grafana/provisioning/datasources/prometheus.yml
     dest: /opt/monitoring/grafana/provisioning/datasources/prometheus.yml
     mode: '0644'
 
 - name: Copy Grafana dashboard provisioning
   copy:
-    src: "{{ playbook_dir }}/../monitoring/grafana/provisioning/dashboards/dashboard.yml"
+    src: >-
+      {{ playbook_dir }}/../monitoring/grafana/provisioning/dashboards/dashboard.yml
     dest: /opt/monitoring/grafana/provisioning/dashboards/dashboard.yml
     mode: '0644'
 
-- name: Deploy monitoring stack via systemd
+- name: Deploy monitoring systemd service
   copy:
+    src: monitoring.service
     dest: /etc/systemd/system/monitoring.service
     mode: '0644'
-    content: |
-      [Unit]
-      Description=Monitoring Stack (Prometheus + Grafana + Alertmanager + node-exporter)
-      Requires=docker.service
-      After=docker.service network-online.target
-
-      [Service]
-      Type=oneshot
-      RemainAfterExit=yes
-      WorkingDirectory=/opt/monitoring
-      ExecStart=/usr/bin/docker compose -f docker-compose.monitoring.yml up -d
-      ExecStop=/usr/bin/docker compose -f docker-compose.monitoring.yml down
-      TimeoutStartSec=300
-
-      [Install]
-      WantedBy=multi-user.target
 
 - name: Enable and start monitoring service
   systemd:
