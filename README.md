@@ -15,25 +15,37 @@ Ce projet automatise le déploiement d'une infrastructure web complète avec :
 
 ## Architecture
 
+![Architecture iac-infra](docs/architecture_iac-infra.png)
+
+> Schéma complet : VM Ubuntu (Nginx + Security + Monitoring via Ansible) · Kubernetes (Deployment + PVC + HPA) · CI/CD GitHub Actions · Alertmanager → Discord
+
+<details>
+<summary>Vue ASCII (alternative texte)</summary>
+
 ```
-[ Poste développeur ]
+[ Poste développeur — Windows 11 ]
       |
-      | vagrant up / ansible-playbook
+      | vagrant up / ansible-playbook / terraform apply
       v
-[ VM Ubuntu 22.04 — 192.168.56.10 ]
+[ VM Ubuntu 22.04 — 192.168.56.10 (VirtualBox host-only) ]
   +-- Nginx (port 80)                    ← rôle Ansible : common
   +-- UFW + SSH hardening                ← rôle Ansible : security
   +-- Stack monitoring (Docker)          ← rôle Ansible : monitoring
-        +-- Prometheus  (port 9090)
-        +-- Grafana     (port 3000)
-        +-- Alertmanager(port 9093)
+        +-- Prometheus    (port 9090)
+        +-- Grafana       (port 3000)    ← dashboard auto-provisionné
+        +-- Alertmanager  (port 9093)    → Discord webhook
         +-- node-exporter (port 9100)
 
-[ Kubernetes (kubectl apply) ]
-  +-- Nginx deployment + Service
-  +-- PostgreSQL deployment + PVC + Secret
-  +-- HPA (autoscaling)
+[ Kubernetes — kubectl apply -f k8s/ ]
+  +-- Nginx Deployment (2 réplicas) + Service NodePort :30080
+  +-- PostgreSQL Deployment + PVC 1Gi + Secret
+  +-- HPA : autoscaling 2-10 réplicas (CPU > 50%)
+
+[ CI/CD — GitHub Actions ]
+  lint (yamllint) → build+push (Docker Hub) → validate (yamllint k8s)
 ```
+
+</details>
 
 ## Prérequis
 
