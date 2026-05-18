@@ -17,10 +17,8 @@ route:
 receivers:
   - name: 'discord-webhook'
     webhook_configs:
-      - url: 'https://discord.com/api/webhooks/1505962601966862376/H6sIEJl6GcmDGCeRh5yjXWGFt3CRc0wX8G2myDa9a-4VN0dEt-OZI3IBIEOH3blRFfTu'
+      - url: 'http://discord-relay:9094/webhook'
         send_resolved: true
-        title: '{{ template "discord.title" . }}'
-        text: '{{ template "discord.text" . }}'
 
 inhibit_rules:
   - source_match:

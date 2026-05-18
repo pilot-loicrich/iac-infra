@@ -82,6 +82,18 @@ services:
       - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
     restart: unless-stopped
+    depends_on:
+      - discord-relay
+
+  discord-relay:
+    image: python:3.11-alpine
+    container_name: discord-relay
+    volumes:
+      - ./discord_relay.py:/relay.py:ro
+    environment:
+      - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1505962601966862376/H6sIEJl6GcmDGCeRh5yjXWGFt3CRc0wX8G2myDa9a-4VN0dEt-OZI3IBIEOH3blRFfTu
+    command: python /relay.py
+    restart: unless-stopped
 
 volumes:
   pgdata:
