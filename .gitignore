@@ -7,3 +7,6 @@
 .env
 
 .env
+
+# Dumps de base de donnees (artefacts)
+docker/backups/*.sql

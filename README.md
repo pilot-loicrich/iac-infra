@@ -186,7 +186,7 @@ La base `wordpress` est créée automatiquement au premier démarrage de MariaDB
 ### Vérification
 
 ```bash
-docker compose exec db sh -c 'mysql -uroot -p"$MARIADB_ROOT_PASSWORD" -e "SHOW TABLES;" wordpress'
+docker compose exec db sh -c 'mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" -e "SHOW TABLES;" wordpress'
 ```
 
 ### Sauvegarde / Restauration
