@@ -4,20 +4,25 @@ Infrastructure as Code — Administrateur Système DevOps (RNCP 36061)
 
 ## Description
 
-Ce projet automatise le déploiement d'une infrastructure web complète avec :
+Ce projet déploie une **application réelle — WordPress** — dans une infrastructure
+entièrement automatisée, hautement disponible et supervisée :
 
 - **Vagrant** : provisioning de VMs locales (Ubuntu 22.04)
-- **Ansible** : configuration automatisée (Nginx, sécurité, monitoring)
+- **Ansible** : configuration automatisée (base, sécurité, monitoring, déploiement WordPress)
 - **Terraform** : Infrastructure as Code (génération inventaire + infra-info.txt)
-- **Docker / Docker Compose** : environnement de développement et stack monitoring
-- **Kubernetes** : orchestration conteneurs (Nginx + PostgreSQL)
+- **Docker / Docker Compose** : WordPress + MariaDB + stack monitoring
+- **Kubernetes** : orchestration haute dispo (WordPress 2 réplicas + MariaDB + HPA + PVC + Secrets)
 - **GitHub Actions** : pipeline CI/CD (lint → build → push → validate)
+
+L'application déployée est **WordPress** (CMS PHP) adossé à une base **MariaDB**,
+conteneurisée à partir d'une **image WordPress custom durcie** (limites PHP de
+production + interdiction de l'édition de fichiers depuis l'admin).
 
 ## Architecture
 
 ![Architecture iac-infra](docs/architecture_iac-infra.png)
 
-> Schéma complet : VM Ubuntu (Nginx + Security + Monitoring via Ansible) · Kubernetes (Deployment + PVC + HPA) · CI/CD GitHub Actions · Alertmanager → Discord
+> Schéma complet : VM Ubuntu (WordPress + MariaDB + Security + Monitoring via Ansible) · Kubernetes (Deployment + PVC + HPA + Secret) · CI/CD GitHub Actions · Alertmanager → Discord
 
 <details>
 <summary>Vue ASCII (alternative texte)</summary>
@@ -28,21 +33,23 @@ Ce projet automatise le déploiement d'une infrastructure web complète avec :
       | vagrant up / ansible-playbook / terraform apply
       v
 [ VM Ubuntu 22.04 — 192.168.56.10 (VirtualBox host-only) ]
-  +-- Nginx (port 80)                    ← rôle Ansible : common
+  +-- WordPress + MariaDB (Docker)        ← rôle Ansible : webapp
   +-- UFW + SSH hardening                ← rôle Ansible : security
   +-- Stack monitoring (Docker)          ← rôle Ansible : monitoring
         +-- Prometheus    (port 9090)
         +-- Grafana       (port 3000)    ← dashboard auto-provisionné
         +-- Alertmanager  (port 9093)    → Discord webhook
         +-- node-exporter (port 9100)
+        +-- mysqld-exporter (port 9104)  ← métriques base WordPress
 
-[ Kubernetes — kubectl apply -f k8s/ ]
-  +-- Nginx Deployment (2 réplicas) + Service NodePort :30080
-  +-- PostgreSQL Deployment + PVC 1Gi + Secret
+[ Kubernetes — kubectl apply -f kubernetes/ ]
+  +-- WordPress Deployment (2 réplicas) + Service NodePort :30080
+  +-- MariaDB Deployment + PVC 1Gi + Secret
+  +-- WordPress PVC 2Gi (wp-content persistant)
   +-- HPA : autoscaling 2-10 réplicas (CPU > 50%)
 
 [ CI/CD — GitHub Actions ]
-  lint (yamllint) → build+push (Docker Hub) → validate (yamllint k8s)
+  lint (yamllint) → build+push image WordPress custom (Docker Hub) → validate (yamllint k8s)
 ```
 
 </details>
@@ -64,12 +71,13 @@ vagrant up
 ```
 
 Cela provisionne la VM et exécute le playbook Ansible qui installe :
-- Nginx
+- Outils de base + Docker
 - UFW (pare-feu) + SSH hardening
 - Stack monitoring complète (Prometheus, Grafana, Alertmanager, node-exporter)
+- **WordPress + MariaDB** (rôle `webapp`)
 
 ```bash
-# Vérifier Nginx
+# Vérifier WordPress
 curl http://192.168.56.10
 
 # Détruire la VM
@@ -81,14 +89,20 @@ vagrant destroy -f
 Créer un fichier `.env` à la racine :
 
 ```env
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=motdepasse_secret
-POSTGRES_DB=testdb
+MARIADB_ROOT_PASSWORD=root_pass_secret
+MARIADB_DATABASE=wordpress
+MARIADB_USER=wp_user
+MARIADB_PASSWORD=wp_pass_secret
+
+WORDPRESS_DB_HOST=db:3306
+WORDPRESS_DB_NAME=wordpress
+WORDPRESS_DB_USER=wp_user
+WORDPRESS_DB_PASSWORD=wp_pass_secret
 ```
 
 ```bash
-# Démarrer tous les services (web + db + monitoring)
-docker compose up -d
+# Démarrer tous les services (WordPress + MariaDB + monitoring)
+docker compose up -d --build
 
 # Vérifier les services
 docker compose ps
@@ -96,14 +110,18 @@ docker compose ps
 
 Services disponibles :
 
-| Service       | URL                          |
-|---------------|------------------------------|
-| Nginx         | http://localhost:8080        |
-| PostgreSQL    | localhost:5433               |
-| Prometheus    | http://localhost:9090        |
-| Grafana       | http://localhost:3000        |
-| Alertmanager  | http://localhost:9093        |
-| node-exporter | http://localhost:9100/metrics|
+| Service         | URL                            |
+|-----------------|--------------------------------|
+| WordPress       | http://localhost:8080          |
+| MariaDB         | localhost:3307                 |
+| Prometheus      | http://localhost:9090          |
+| Grafana         | http://localhost:3000          |
+| Alertmanager    | http://localhost:9093          |
+| node-exporter   | http://localhost:9100/metrics  |
+| mysqld-exporter | http://localhost:9104/metrics  |
+
+Au premier accès à http://localhost:8080, l'assistant d'installation WordPress
+se lance ; choisir la langue, le titre du site et créer le compte administrateur.
 
 ### 3. Terraform
 
@@ -131,6 +149,8 @@ Le dashboard **Infrastructure** est provisionné automatiquement au démarrage a
 - RAM Usage (%)
 - Uptime (secondes)
 
+Les métriques de la base WordPress sont collectées via **mysqld-exporter** (job `mysqld`).
+
 ### Alertes Prometheus
 
 Trois alertes sont configurées dans [monitoring/alerts.yml](monitoring/alerts.yml) :
@@ -141,97 +161,91 @@ Trois alertes sont configurées dans [monitoring/alerts.yml](monitoring/alerts.y
 | HighMemoryUsage | RAM > 85% / 2 min  | critical |
 | NginxDown       | node_exporter down | critical |
 
-### Configurer les notifications (Alertmanager)
+### Notifications Discord (Alertmanager + relay)
 
-Les alertes sont envoyées via Discord webhook. Pour l'activer :
+Les alertes sont envoyées sur Discord. Alertmanager pousse un webhook vers un
+**micro-relay Python** ([discord_relay.py](discord_relay.py), port 9094) qui traduit
+le JSON Alertmanager au format natif Discord.
 
-1. Créer un webhook Discord :
-   - Paramètres du serveur → Intégrations → Webhooks → Nouveau webhook
-   - Copier l'URL du webhook
-
-2. Mettre à jour [monitoring/alertmanager.yml](monitoring/alertmanager.yml) :
-
-```yaml
-receivers:
-  - name: 'discord-webhook'
-    webhook_configs:
-      - url: 'https://discord.com/api/webhooks/VOTRE_ID/VOTRE_TOKEN'
-```
-
-3. Tester une alerte de bout en bout :
+Tester une alerte de bout en bout :
 
 ```bash
 # Arrêter node-exporter pour déclencher NginxDown
 docker compose stop node-exporter
 
 # Vérifier dans Prometheus : http://localhost:9090/alerts
-# Attendre 1 minute → l'alerte arrive sur Discord
+# Attendre ~1 minute → l'alerte arrive sur Discord (HTTP 204)
 docker compose start node-exporter
 ```
 
-## Base de données PostgreSQL
+## Base de données WordPress (MariaDB)
 
-### Premier démarrage
-
-Au premier `docker compose up`, PostgreSQL exécute automatiquement [init_db/schema.sql](init_db/schema.sql) qui crée la table `utilisateurs` et insère des données de test.
+La base `wordpress` est créée automatiquement au premier démarrage de MariaDB
+(variables `MARIADB_*` du `.env`). WordPress crée son propre schéma à l'installation.
 
 ### Vérification
 
 ```bash
-docker compose exec db psql -U admin -d testdb -c "SELECT * FROM utilisateurs;"
-```
-
-### Réinitialiser la base
-
-```bash
-docker compose down -v          # supprime le volume pgdata
-docker compose up -d db         # recrée la base depuis init_db/schema.sql
+docker compose exec db sh -c 'mysql -uroot -p"$MARIADB_ROOT_PASSWORD" -e "SHOW TABLES;" wordpress'
 ```
 
 ### Sauvegarde / Restauration
 
 ```bash
-# Sauvegarder
-./scripts/backup-postgres.sh
+# Sauvegarder (mysqldump)
+./scripts/backup-mariadb.sh
 
-# Restaurer depuis un backup
-docker compose exec -T db psql -U admin -d testdb < docker/backups/backup.sql
+# Restaurer depuis le dernier backup
+./scripts/backup-mariadb.sh restore
 ```
 
-### Kubernetes (PostgreSQL)
+### Réinitialiser
 
 ```bash
-kubectl apply -f kubernetes/postgres-secret.yml
-kubectl apply -f kubernetes/postgres.yml
-
-# Initialiser le schéma sur K8s
-kubectl exec -it deployment/postgres -- psql -U admin -d testdb < init_db/schema.sql
+docker compose down -v          # supprime les volumes mariadb_data et wp_data
+docker compose up -d --build
 ```
+
+## Déploiement Kubernetes (haute disponibilité)
+
+```bash
+kubectl apply -f kubernetes/wordpress-secret.yml
+kubectl apply -f kubernetes/mariadb.yml
+kubectl apply -f kubernetes/wordpress.yml
+kubectl apply -f kubernetes/hpa.yml
+
+# Vérifier
+kubectl get pods,svc,pvc,hpa
+```
+
+- **WordPress** : 2 réplicas, Service NodePort `:30080`, PVC 2Gi pour `wp-content`
+- **MariaDB** : PVC 1Gi (données persistantes), identifiants via Secret
+- **HPA** : autoscaling 2 → 10 réplicas (seuil CPU 50%)
 
 ## Pipeline CI/CD
 
 Le pipeline [.github/workflows/ci.yml](.github/workflows/ci.yml) exécute automatiquement à chaque push :
 
-1. **Lint YAML** — validation de tous les fichiers YAML
-2. **Lint Terraform** — `terraform fmt` + `terraform validate`
-3. **Build Docker** — build de l'image Nginx custom
-4. **Push Docker Hub** — push de l'image (sur `main` uniquement)
+1. **Lint YAML** — validation des fichiers YAML (`ansible/`)
+2. **Lint Terraform** — `terraform init` + `terraform validate`
+3. **Build Docker** — build de l'image **WordPress custom** (`docker/Dockerfile`)
+4. **Push Docker Hub** — push de l'image `iac-wordpress` (sur `main` uniquement)
 5. **Validate Kubernetes** — validation des manifests K8s
 
 ## Compétences RNCP couvertes
 
 | Bloc | Compétence | Couvert par |
 |------|-----------|------------|
-| BC01-CP1 | Scripts Bash | `scripts/setup.sh`, `scripts/backup-postgres.sh` |
-| BC01-CP2 | IaC | Terraform + Ansible (3 rôles) |
-| BC01-CP3 | Sécurité | UFW, SSH hardening, secrets K8s, `.env` non commité |
-| BC01-CP4 | Mise en prod | Vagrant + Kubernetes manifests |
-| BC02-CP1 | Env de test | Docker Compose dev |
-| BC02-CP2 | Stockage | PVC PostgreSQL |
-| BC02-CP3 | Conteneurs | Dockerfile + image custom |
+| BC01-CP1 | Scripts Bash | `scripts/setup.sh`, `scripts/backup-mariadb.sh` |
+| BC01-CP2 | IaC | Terraform + Ansible (4 rôles : common/security/monitoring/webapp) |
+| BC01-CP3 | Sécurité | UFW, SSH hardening, Secrets K8s, image WordPress durcie, `.env` non commité |
+| BC01-CP4 | Mise en prod | Vagrant + Ansible (déploiement WordPress) + Kubernetes |
+| BC02-CP1 | Env de test | Docker Compose (WordPress + MariaDB + monitoring) |
+| BC02-CP2 | Stockage | PVC MariaDB + PVC wp-content (WordPress) |
+| BC02-CP3 | Conteneurs | Image WordPress custom durcie (Dockerfile) |
 | BC02-CP4 | CI/CD | GitHub Actions : lint → build → push → validate |
-| BC03-CP1 | KPI | Alertes Prometheus (CPU, mémoire, nginx down) |
-| BC03-CP2 | Supervision | Prometheus + Grafana + Alertmanager + dashboard |
+| BC03-CP1 | KPI | Alertes Prometheus (CPU, mémoire, service down) |
+| BC03-CP2 | Supervision | Prometheus + Grafana + mysqld-exporter + Alertmanager → Discord |
 | BC03-CP3 | Anglais | Documentation technique (commits, CI, code) |
 
 ## Auteur
