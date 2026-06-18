@@ -19,6 +19,6 @@ scrape_configs:
     static_configs:
       - targets: ["node-exporter:9100"]
 
-  - job_name: "nginx"
+  - job_name: "mysqld"
     static_configs:
-      - targets: ["web:80"]
+      - targets: ["mysqld-exporter:9104"]

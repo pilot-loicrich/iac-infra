@@ -37,12 +37,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build image Nginx custom
+      - name: Build image WordPress custom
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/iac-nginx:latest -f docker/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/iac-wordpress:latest -f docker/Dockerfile .
       - name: Push image sur Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/iac-nginx:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/iac-wordpress:latest
 
   validate-k8s:
     name: Validation manifests Kubernetes
@@ -55,7 +55,8 @@ jobs:
       - name: Valider les manifests Kubernetes
         run: |
           echo "Validation syntaxe YAML des manifests Kubernetes"
-          yamllint -d relaxed kubernetes/nginx.yml
-          yamllint -d relaxed kubernetes/postgres.yml
+          yamllint -d relaxed kubernetes/wordpress.yml
+          yamllint -d relaxed kubernetes/mariadb.yml
+          yamllint -d relaxed kubernetes/wordpress-secret.yml
           yamllint -d relaxed kubernetes/hpa.yml
           echo "Tous les manifests Kubernetes sont valides"
