@@ -61,7 +61,7 @@
 <rect x="426" y="128" width="140" height="24" rx="0" ry="0" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
 <text x="496" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Rôle : common</text>
 <rect x="436" y="162" width="120" height="34" rx="6" ry="6" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="496" y="172" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Nginx</text>
+<text x="496" y="172" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">WordPress</text>
 <text x="496" y="187" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:80</text>
 <text x="496" y="210" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HTTP server</text>
 <text x="496" y="226" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">vhosts configurés</text>
@@ -107,14 +107,14 @@
 </g>
 <g filter="url(#shadow)">
 <rect x="426" y="318" width="302" height="56" rx="6" ry="6" fill="#C8E6C9" stroke="#2E7D32" stroke-width="1.5" />
-<text x="577" y="338" font-size="11" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐘  init_db/schema.sql</text>
+<text x="577" y="338" font-size="11" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐬  MariaDB — base wordpress</text>
 <text x="577" y="354" font-size="10" font-weight="normal" fill="#1B5E20" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Monté dans /docker-entrypoint-initdb.d:ro</text>
-<text x="577" y="370" font-size="10" font-weight="normal" fill="#1B5E20" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Exécuté auto au 1er démarrage (PostgreSQL natif)</text>
+<text x="577" y="370" font-size="10" font-weight="normal" fill="#1B5E20" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">WordPress (image custom durcie) + MariaDB</text>
 </g>
 <g filter="url(#shadow)">
 <rect x="426" y="390" width="302" height="40" rx="6" ry="6" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5" />
 <text x="577" y="407" font-size="11" font-weight="bold" fill="#1565C0" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐳  docker-compose.yml — 6 services</text>
-<text x="577" y="423" font-size="9" font-weight="normal" fill="#0D47A1" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">web · db · prometheus · grafana · node-exporter · alertmanager</text>
+<text x="577" y="423" font-size="9" font-weight="normal" fill="#0D47A1" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">web(WordPress) · db(MariaDB) · prometheus · grafana · node/mysqld-exporter · alertmanager</text>
 </g>
 <text x="818" y="486" font-size="10" font-weight="bold" fill="#B71C1C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🔔 alertes Discord</text>
 <g filter="url(#shadow)">
@@ -126,7 +126,7 @@
 <g filter="url(#shadow)">
 <rect x="936" y="128" width="198" height="116" rx="7" ry="7" fill="#FFFFFF" stroke="#1565C0" stroke-width="1.5" />
 <rect x="936" y="128" width="198" height="24" rx="0" ry="0" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="1035" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">nginx-deployment.yml</text>
+<text x="1035" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">wordpress.yml</text>
 <rect x="946" y="160" width="178" height="34" rx="6" ry="6" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
 <text x="1035" y="177" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Deployment — 2 réplicas</text>
 <rect x="946" y="202" width="178" height="30" rx="6" ry="6" fill="#BBDEFB" stroke="#BBDEFB" stroke-width="1.5" />
@@ -135,9 +135,9 @@
 <g filter="url(#shadow)">
 <rect x="1150" y="128" width="204" height="116" rx="7" ry="7" fill="#FFFFFF" stroke="#00695C" stroke-width="1.5" />
 <rect x="1150" y="128" width="204" height="24" rx="0" ry="0" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="1252" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">postgres-deployment.yml</text>
+<text x="1252" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">mariadb.yml</text>
 <rect x="1160" y="160" width="184" height="28" rx="6" ry="6" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="1252" y="174" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Deployment — PostgreSQL 15</text>
+<text x="1252" y="174" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Deployment — MariaDB 11</text>
 <rect x="1160" y="194" width="184" height="28" rx="6" ry="6" fill="#B2DFDB" stroke="#B2DFDB" stroke-width="1.5" />
 <text x="1252" y="208" font-size="11" font-weight="bold" fill="#00695C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">PVC 1Gi (ReadWriteOnce)</text>
 <rect x="1160" y="226" width="184" height="24" rx="6" ry="6" fill="#ECEFF1" stroke="#ECEFF1" stroke-width="1.5" />
@@ -146,7 +146,7 @@
 <g filter="url(#shadow)">
 <rect x="936" y="260" width="418" height="84" rx="7" ry="7" fill="#FFFFFF" stroke="#E65100" stroke-width="1.5" />
 <rect x="936" y="260" width="418" height="24" rx="0" ry="0" fill="#E65100" stroke="#E65100" stroke-width="1.5" />
-<text x="1145" y="272" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">nginx-hpa.yml — HorizontalPodAutoscaler</text>
+<text x="1145" y="272" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">hpa.yml — HorizontalPodAutoscaler</text>
 <rect x="946" y="292" width="120" height="36" rx="6" ry="6" fill="#FFE0B2" stroke="#FFE0B2" stroke-width="1.5" />
 <text x="1006" y="310" font-size="11" font-weight="bold" fill="#E65100" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Min : 2 réplicas</text>
 <rect x="1080" y="292" width="120" height="36" rx="6" ry="6" fill="#FFE0B2" stroke="#FFE0B2" stroke-width="1.5" />
@@ -160,7 +160,7 @@
 <rect x="920" y="418" width="200" height="10" rx="0" ry="0" fill="#5865F2" stroke="#5865F2" stroke-width="1.5" />
 <text x="1020" y="414" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">💬  Discord</text>
 <text x="1020" y="450" font-size="11" font-weight="normal" fill="#5865F2" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Notifications d'alertes</text>
-<text x="1020" y="468" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">InstanceDown · NginxDown</text>
+<text x="1020" y="468" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HighMemory · NginxDown</text>
 <text x="1020" y="484" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HighMemory · DiskSpaceLow</text>
 </g>
 <line x1="900" y1="160" x2="916" y2="160" stroke="#4A148C" stroke-width="2" marker-end="url(#arrow_4A148C)"/>
@@ -196,7 +196,7 @@
 <text x="553" y="646" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Login Docker Hub</text>
 <text x="553" y="664" font-size="11" font-weight="bold" fill="#1565C0" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Build + Push image</text>
 <rect x="428" y="686" width="250" height="30" rx="5" ry="5" fill="#2496ED" stroke="#2496ED" stroke-width="1.5" />
-<text x="553" y="701" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐳  pilot-loicrich/iac-nginx:latest → Docker Hub</text>
+<text x="553" y="701" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐳  lnanzotonlieu/iac-wordpress:latest → Docker Hub</text>
 <line x1="692" y1="654" x2="716" y2="654" stroke="#4A148C" stroke-width="2.5" marker-end="url(#arrow_4A148C)"/>
 <text x="704" y="644" font-size="9" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">OK ✓</text>
 <rect x="718" y="584" width="250" height="140" rx="7" ry="7" fill="#E1BEE7" stroke="#4A148C" stroke-width="1.5" />
