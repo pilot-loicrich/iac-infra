@@ -1,4 +1,4 @@
-﻿---
+---
 - name: Configuration du serveur web
   hosts: web
   become: true
@@ -7,3 +7,4 @@
     - common
     - security
     - monitoring
+    - webapp

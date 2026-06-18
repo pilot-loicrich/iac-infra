@@ -1,15 +1,12 @@
-﻿---
+---
 - name: Mise a jour des paquets
   apt:
     update_cache: true
 
-- name: Installation de Nginx
+- name: Installation des outils de base
   apt:
-    name: nginx
+    name:
+      - curl
+      - vim
+      - ca-certificates
     state: present
-
-- name: Demarrage de Nginx
-  service:
-    name: nginx
-    state: started
-    enabled: true

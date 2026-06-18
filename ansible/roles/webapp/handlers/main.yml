@@ -1,0 +1,5 @@
+---
+- name: Restart webapp
+  command: docker compose -f {{ webapp_dir }}/docker-compose.yml up -d --force-recreate
+  args:
+    chdir: "{{ webapp_dir }}"

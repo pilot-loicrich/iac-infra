@@ -1,0 +1,7 @@
+---
+# Variables de deploiement WordPress (a surcharger via Ansible Vault en production)
+webapp_dir: /opt/webapp
+mariadb_root_password: root_pass_secret_2026
+mariadb_database: wordpress
+mariadb_user: wp_user
+mariadb_password: wp_pass_secret_2026
