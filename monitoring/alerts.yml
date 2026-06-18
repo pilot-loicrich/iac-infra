@@ -19,11 +19,11 @@
           summary: "Memoire critique sur {{ $labels.instance }}"
           description: "RAM > 85% utilisee"
 
-      - alert: NginxDown
+      - alert: InstanceDown
         expr: up{job="node_exporter"} == 0
         for: 1m
         labels:
           severity: critical
         annotations:
-          summary: "Infrastructure inaccessible"
+          summary: "Instance inaccessible sur {{ $labels.instance }}"
           description: "Le node_exporter ne repond plus depuis 1 minute"

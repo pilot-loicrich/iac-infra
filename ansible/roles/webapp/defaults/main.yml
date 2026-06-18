@@ -1,7 +1,11 @@
 ---
-# Variables de deploiement WordPress (a surcharger via Ansible Vault en production)
+# Variables de deploiement WordPress.
+# SECURITE : ne PAS stocker les mots de passe en clair ici en production.
+# Les surcharger via Ansible Vault (group_vars/all/vault.yml chiffre) ou
+# via --extra-vars au lancement. Les valeurs ci-dessous sont des
+# placeholders pour le lab uniquement.
 webapp_dir: /opt/webapp
-mariadb_root_password: root_pass_secret_2026
+mariadb_root_password: "{{ vault_mariadb_root_password | default('changeme_root') }}"
 mariadb_database: wordpress
 mariadb_user: wp_user
-mariadb_password: wp_pass_secret_2026
+mariadb_password: "{{ vault_mariadb_password | default('changeme_wp') }}"

@@ -67,7 +67,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - grafana_data:/var/lib/grafana
@@ -110,8 +110,8 @@ services:
     container_name: discord-relay
     volumes:
       - ./discord_relay.py:/relay.py:ro
-    environment:
-      - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1505962601966862376/H6sIEJl6GcmDGCeRh5yjXWGFt3CRc0wX8G2myDa9a-4VN0dEt-OZI3IBIEOH3blRFfTu
+    env_file:
+      - .env
     command: python /relay.py
     restart: unless-stopped
 

@@ -159,7 +159,7 @@ Trois alertes sont configurées dans [monitoring/alerts.yml](monitoring/alerts.y
 |-----------------|--------------------|----------|
 | HighCPUUsage    | CPU > 80% / 2 min  | warning  |
 | HighMemoryUsage | RAM > 85% / 2 min  | critical |
-| NginxDown       | node_exporter down | critical |
+| InstanceDown    | node_exporter down | critical |
 
 ### Notifications Discord (Alertmanager + relay)
 
@@ -238,7 +238,7 @@ Le pipeline [.github/workflows/ci.yml](.github/workflows/ci.yml) exécute automa
 |------|-----------|------------|
 | BC01-CP1 | Scripts Bash | `scripts/setup.sh`, `scripts/backup-mariadb.sh` |
 | BC01-CP2 | IaC | Terraform + Ansible (4 rôles : common/security/monitoring/webapp) |
-| BC01-CP3 | Sécurité | UFW, SSH hardening, Secrets K8s, image WordPress durcie, `.env` non commité |
+| BC01-CP3 | Sécurité | UFW, SSH hardening, gestion des secrets (Ansible Vault / Secret K8s injecté hors dépôt, `.env` gitignoré), image WordPress durcie |
 | BC01-CP4 | Mise en prod | Vagrant + Ansible (déploiement WordPress) + Kubernetes |
 | BC02-CP1 | Env de test | Docker Compose (WordPress + MariaDB + monitoring) |
 | BC02-CP2 | Stockage | PVC MariaDB + PVC wp-content (WordPress) |
@@ -247,6 +247,24 @@ Le pipeline [.github/workflows/ci.yml](.github/workflows/ci.yml) exécute automa
 | BC03-CP1 | KPI | Alertes Prometheus (CPU, mémoire, service down) |
 | BC03-CP2 | Supervision | Prometheus + Grafana + mysqld-exporter + Alertmanager → Discord |
 | BC03-CP3 | Anglais | Documentation technique (commits, CI, code) |
+
+## Limites connues & axes de production
+
+Ce projet est un **lab** : certains choix sont assumés et seraient renforcés en production.
+
+- **Secrets** : les valeurs du `.env` et des `defaults` Ansible sont des secrets de
+  lab. En production : **Ansible Vault** (chiffrement), Secret Kubernetes généré hors
+  dépôt (`kubectl create secret`, Sealed Secrets / External Secrets / Vault).
+- **TLS / HTTPS** : non activé en local. En production : **cert-manager + Let's Encrypt**
+  sur un Ingress Kubernetes (ou reverse-proxy avec certificat).
+- **Terraform** : ici il génère uniquement l'inventaire Ansible et `infra-info.txt`.
+  C'est **Ansible** qui porte la configuration. Pour une vraie infra cloud, Terraform
+  provisionnerait les ressources (VPC, instances, etc.).
+- **Stockage WordPress en K8s** : le PVC `wp-content` est en ReadWriteOnce (mono-nœud).
+  Pour plusieurs réplicas sur plusieurs nœuds : stockage **ReadWriteMany** (NFS) ou
+  objet (S3) pour les médias.
+- **CI** : la validation Kubernetes inclut un scan de configuration **Trivy**
+  (manifests + Dockerfile) en complément de yamllint.
 
 ## Auteur
 

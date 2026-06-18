@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script d'automatisation - Configuration initiale du serveur
-set -e
+set -euo pipefail
 
 echo "=== Mise a jour du systeme ==="
 apt-get update -y
@@ -14,7 +14,7 @@ ufw allow 80/tcp
 ufw allow 443/tcp
 echo "y" | ufw enable
 
-echo "=== Verification des services ==="
-systemctl status nginx || echo "Nginx non encore installe"
+echo "=== Verification de Docker ==="
+systemctl status docker --no-pager || echo "Docker non encore installe"
 
 echo "=== Script termine avec succes ==="
