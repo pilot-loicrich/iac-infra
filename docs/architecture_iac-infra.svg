@@ -1,236 +1,109 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1400" height="860" viewBox="0 0 1400 860" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl dsc" font-family="Arial, Segoe UI, Roboto, sans-serif">
+<title id="ttl">Architecture iac-infra - WordPress + MariaDB</title>
+<desc id="dsc">Lab local : poste Windows hebergeant une VM Ubuntu avec Docker Compose (WordPress, MariaDB, supervision), une couche Kubernetes, et la chaine CI/CD vers Discord et Docker Hub.</desc>
 <defs>
-  <marker id="arrow_1565C0" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#1565C0"/>
-  </marker>
-  <marker id="arrow_00695C" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#00695C"/>
-  </marker>
-  <marker id="arrow_2E7D32" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#2E7D32"/>
-  </marker>
-  <marker id="arrow_4A148C" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#4A148C"/>
-  </marker>
-  <marker id="arrow_E65100" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#E65100"/>
-  </marker>
-  <marker id="arrow_5865F2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#5865F2"/>
-  </marker>
-  <marker id="arrow_455A64" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#455A64"/>
-  </marker>
-  <marker id="arrow_2496ED" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
-    <polygon points="0 0, 8 3, 0 6" fill="#2496ED"/>
-  </marker>
-  <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
-    <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#00000022"/>
-  </filter>
+<style>
+  .lyr{fill:none;stroke-width:1.6}
+  .navy{stroke:#1A237E}.blue{stroke:#1565C0}.teal{stroke:#00695C}.purple{stroke:#4A148C}.green{stroke:#2E7D32}
+  .box{fill:#ffffff;stroke:#cbd5e1;stroke-width:1.2}
+  .soft{fill:#f1f5f9;stroke:#e2e8f0}
+  .hdr{font-size:12.5px;font-weight:700}
+  .lbl{font-size:13px;font-weight:700;fill:#1f2937}
+  .sub{font-size:10.5px;fill:#64748b}
+  .port{font-size:10.5px;font-weight:700;font-family:Consolas,monospace}
+  .cap{font-size:10.5px;fill:#94a3b8}
+  .tiny{font-size:9.5px;fill:#64748b;font-style:italic}
+  line.flow{stroke:#94a3b8;stroke-width:1.4}
+  text{fill:#1f2937}
+</style>
+<marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
 </defs>
-<rect width="1400" height="860" fill="#ECEFF1"/>
-<rect x="0" y="0" width="1400" height="56" rx="0" ry="0" fill="#1A237E" stroke="#1A237E" stroke-width="1.5" />
-<rect x="0" y="56" width="1400" height="4" rx="0" ry="0" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="700" y="28" font-size="22" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">iac-infra — Architecture Technique</text>
-<text x="700" y="48" font-size="11" font-weight="normal" fill="#AACCFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">ASD RNCP 36061  •  Loïc NANZO TONLIEU  •  École IT d'Orléans  •  2025-2026</text>
-<g filter="url(#shadow)">
-<rect x="20" y="80" width="200" height="160" rx="8" ry="8" fill="#FFFFFF" stroke="#1A237E" stroke-width="1.5" />
-<rect x="20" y="80" width="200" height="28" rx="8" ry="8" fill="#1A237E" stroke="#1A237E" stroke-width="1.5" />
-<rect x="20" y="96" width="200" height="12" rx="0" ry="0" fill="#1A237E" stroke="#1A237E" stroke-width="1.5" />
-<text x="120" y="94" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">💻  Poste Développeur</text>
-<text x="120" y="126" font-size="12" font-weight="bold" fill="#1A237E" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Windows 11</text>
-<text x="120" y="146" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Dell — 8 Go RAM</text>
-<text x="120" y="164" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">VirtualBox 7</text>
-<text x="120" y="182" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Git + VSCode</text>
-<text x="120" y="200" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">PowerShell / WSL2</text>
-<text x="120" y="220" font-size="10" font-weight="normal" fill="#111111" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif"></text>
-</g>
-<text x="310" y="114" font-size="10" font-weight="bold" fill="#00695C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">vagrant up</text>
-<text x="310" y="128" font-size="10" font-weight="normal" fill="#00695C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">ansible-playbook playbook.yml</text>
-<text x="310" y="142" font-size="10" font-weight="bold" fill="#4A148C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">terraform apply</text>
-<line x1="220" y1="160" x2="408" y2="160" stroke="#00695C" stroke-width="2" marker-end="url(#arrow_00695C)"/>
-<g filter="url(#shadow)">
-<rect x="410" y="80" width="490" height="420" rx="10" ry="10" fill="#F0F4FF" stroke="#1565C0" stroke-width="1.5" />
-<rect x="410" y="80" width="490" height="32" rx="10" ry="10" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<rect x="410" y="100" width="490" height="12" rx="0" ry="0" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="655" y="96" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🖥️  VM Ubuntu 22.04 LTS  —  192.168.56.10  (VirtualBox host-only)</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="426" y="128" width="140" height="110" rx="7" ry="7" fill="#FFFFFF" stroke="#00695C" stroke-width="1.5" />
-<rect x="426" y="128" width="140" height="24" rx="0" ry="0" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="496" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Rôle : common</text>
-<rect x="436" y="162" width="120" height="34" rx="6" ry="6" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="496" y="172" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">WordPress</text>
-<text x="496" y="187" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:80</text>
-<text x="496" y="210" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HTTP server</text>
-<text x="496" y="226" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">vhosts configurés</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="580" y="128" width="148" height="110" rx="7" ry="7" fill="#FFFFFF" stroke="#1A237E" stroke-width="1.5" />
-<rect x="580" y="128" width="148" height="24" rx="0" ry="0" fill="#1A237E" stroke="#1A237E" stroke-width="1.5" />
-<text x="654" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Rôle : security</text>
-<rect x="590" y="162" width="128" height="34" rx="6" ry="6" fill="#1A237E" stroke="#1A237E" stroke-width="1.5" />
-<text x="654" y="179" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">UFW + SSH hardening</text>
-<text x="664" y="210" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">PasswordAuth no</text>
-<text x="664" y="226" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">unattended-upgrades</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="742" y="128" width="152" height="364" rx="7" ry="7" fill="#FFFFFF" stroke="#E65100" stroke-width="1.5" />
-<rect x="742" y="128" width="152" height="24" rx="0" ry="0" fill="#E65100" stroke="#E65100" stroke-width="1.5" />
-<text x="818" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Rôle : monitoring</text>
-<text x="818" y="166" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Docker + systemd</text>
-<rect x="752" y="178" width="132" height="38" rx="6" ry="6" fill="#E65100" stroke="#E65100" stroke-width="1.5" />
-<text x="818" y="190" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Prometheus</text>
-<text x="818" y="205" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:9090</text>
-<rect x="752" y="224" width="132" height="38" rx="6" ry="6" fill="#4A148C" stroke="#4A148C" stroke-width="1.5" />
-<text x="818" y="236" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Grafana</text>
-<text x="818" y="251" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:3000 (dashboard auto)</text>
-<rect x="752" y="270" width="132" height="38" rx="6" ry="6" fill="#B71C1C" stroke="#B71C1C" stroke-width="1.5" />
-<text x="818" y="282" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Alertmanager</text>
-<text x="818" y="297" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:9093</text>
-<rect x="752" y="316" width="132" height="38" rx="6" ry="6" fill="#455A64" stroke="#455A64" stroke-width="1.5" />
-<text x="818" y="328" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">node-exporter</text>
-<text x="818" y="343" font-size="10" font-weight="normal" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">:9100</text>
-<rect x="752" y="370" width="132" height="100" rx="5" ry="5" fill="#ECEFF1" stroke="#CCCCCC" stroke-width="1.5" />
-<text x="818" y="386" font-size="9" font-weight="bold" fill="#1A237E" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Auto-provisionné</text>
-<text x="818" y="402" font-size="9" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">datasource Prometheus</text>
-<text x="818" y="416" font-size="9" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">dashboard CPU/RAM</text>
-<text x="818" y="430" font-size="9" font-weight="bold" fill="#00695C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">monitoring.service</text>
-<text x="818" y="444" font-size="9" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">(systemd — boot)</text>
-<text x="818" y="460" font-size="9" font-weight="normal" fill="#E65100" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">📁 /opt/monitoring/</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="426" y="254" width="302" height="48" rx="6" ry="6" fill="#F3E5F5" stroke="#4A148C" stroke-width="1.5" />
-<text x="577" y="274" font-size="10" font-weight="normal" fill="#4A148C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🔧  Terraform → génère ansible/inventory/hosts.ini + infra-info.txt</text>
-<text x="577" y="292" font-size="10" font-weight="bold" fill="#4A148C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">provider local + null  |  terraform apply</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="426" y="318" width="302" height="56" rx="6" ry="6" fill="#C8E6C9" stroke="#2E7D32" stroke-width="1.5" />
-<text x="577" y="338" font-size="11" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐬  MariaDB — base wordpress</text>
-<text x="577" y="354" font-size="10" font-weight="normal" fill="#1B5E20" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Monté dans /docker-entrypoint-initdb.d:ro</text>
-<text x="577" y="370" font-size="10" font-weight="normal" fill="#1B5E20" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">WordPress (image custom durcie) + MariaDB</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="426" y="390" width="302" height="40" rx="6" ry="6" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5" />
-<text x="577" y="407" font-size="11" font-weight="bold" fill="#1565C0" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐳  docker-compose.yml — 6 services</text>
-<text x="577" y="423" font-size="9" font-weight="normal" fill="#0D47A1" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">web(WordPress) · db(MariaDB) · prometheus · grafana · node/mysqld-exporter · alertmanager</text>
-</g>
-<text x="818" y="486" font-size="10" font-weight="bold" fill="#B71C1C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🔔 alertes Discord</text>
-<g filter="url(#shadow)">
-<rect x="920" y="80" width="450" height="300" rx="10" ry="10" fill="#F8F4FF" stroke="#4A148C" stroke-width="1.5" />
-<rect x="920" y="80" width="450" height="32" rx="10" ry="10" fill="#4A148C" stroke="#4A148C" stroke-width="1.5" />
-<rect x="920" y="100" width="450" height="12" rx="0" ry="0" fill="#4A148C" stroke="#4A148C" stroke-width="1.5" />
-<text x="1145" y="96" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">☸️  Kubernetes — kubectl apply -f k8s/</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="936" y="128" width="198" height="116" rx="7" ry="7" fill="#FFFFFF" stroke="#1565C0" stroke-width="1.5" />
-<rect x="936" y="128" width="198" height="24" rx="0" ry="0" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="1035" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">wordpress.yml</text>
-<rect x="946" y="160" width="178" height="34" rx="6" ry="6" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="1035" y="177" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Deployment — 2 réplicas</text>
-<rect x="946" y="202" width="178" height="30" rx="6" ry="6" fill="#BBDEFB" stroke="#BBDEFB" stroke-width="1.5" />
-<text x="1035" y="217" font-size="11" font-weight="bold" fill="#1565C0" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Service NodePort :30080</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="1150" y="128" width="204" height="116" rx="7" ry="7" fill="#FFFFFF" stroke="#00695C" stroke-width="1.5" />
-<rect x="1150" y="128" width="204" height="24" rx="0" ry="0" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="1252" y="140" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">mariadb.yml</text>
-<rect x="1160" y="160" width="184" height="28" rx="6" ry="6" fill="#00695C" stroke="#00695C" stroke-width="1.5" />
-<text x="1252" y="174" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Deployment — MariaDB 11</text>
-<rect x="1160" y="194" width="184" height="28" rx="6" ry="6" fill="#B2DFDB" stroke="#B2DFDB" stroke-width="1.5" />
-<text x="1252" y="208" font-size="11" font-weight="bold" fill="#00695C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">PVC 1Gi (ReadWriteOnce)</text>
-<rect x="1160" y="226" width="184" height="24" rx="6" ry="6" fill="#ECEFF1" stroke="#ECEFF1" stroke-width="1.5" />
-<text x="1252" y="238" font-size="11" font-weight="bold" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Secret (base64)</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="936" y="260" width="418" height="84" rx="7" ry="7" fill="#FFFFFF" stroke="#E65100" stroke-width="1.5" />
-<rect x="936" y="260" width="418" height="24" rx="0" ry="0" fill="#E65100" stroke="#E65100" stroke-width="1.5" />
-<text x="1145" y="272" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">hpa.yml — HorizontalPodAutoscaler</text>
-<rect x="946" y="292" width="120" height="36" rx="6" ry="6" fill="#FFE0B2" stroke="#FFE0B2" stroke-width="1.5" />
-<text x="1006" y="310" font-size="11" font-weight="bold" fill="#E65100" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Min : 2 réplicas</text>
-<rect x="1080" y="292" width="120" height="36" rx="6" ry="6" fill="#FFE0B2" stroke="#FFE0B2" stroke-width="1.5" />
-<text x="1140" y="310" font-size="11" font-weight="bold" fill="#E65100" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Max : 10 réplicas</text>
-<rect x="1214" y="292" width="130" height="36" rx="6" ry="6" fill="#FFE0B2" stroke="#FFE0B2" stroke-width="1.5" />
-<text x="1279" y="310" font-size="11" font-weight="bold" fill="#E65100" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Trigger : CPU > 50%</text>
-</g>
-<g filter="url(#shadow)">
-<rect x="920" y="400" width="200" height="100" rx="8" ry="8" fill="#EEF0FD" stroke="#5865F2" stroke-width="1.5" />
-<rect x="920" y="400" width="200" height="28" rx="8" ry="8" fill="#5865F2" stroke="#5865F2" stroke-width="1.5" />
-<rect x="920" y="418" width="200" height="10" rx="0" ry="0" fill="#5865F2" stroke="#5865F2" stroke-width="1.5" />
-<text x="1020" y="414" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">💬  Discord</text>
-<text x="1020" y="450" font-size="11" font-weight="normal" fill="#5865F2" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Notifications d'alertes</text>
-<text x="1020" y="468" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HighMemory · NginxDown</text>
-<text x="1020" y="484" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">HighMemory · DiskSpaceLow</text>
-</g>
-<line x1="900" y1="160" x2="916" y2="160" stroke="#4A148C" stroke-width="2" marker-end="url(#arrow_4A148C)"/>
-<text x="852" y="148" font-size="10" font-weight="bold" fill="#4A148C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">kubectl apply</text>
-<line x1="900" y1="440" x2="916" y2="450" stroke="#B71C1C" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow_B71C1C)"/>
-<line x1="894" y1="450" x2="916" y2="450" stroke="#B71C1C" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrow_B71C1C)"/>
-<text x="760" y="440" font-size="10" font-weight="bold" fill="#B71C1C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">alertes Discord webhook</text>
-<line x1="120" y1="240" x2="120" y2="536" stroke="#24292E" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow_24292E)"/>
-<text x="88" y="420" font-size="10" font-weight="bold" fill="#24292E" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">git push</text>
-<g filter="url(#shadow)">
-<rect x="20" y="540" width="1360" height="200" rx="8" ry="8" fill="#FFFFFF" stroke="#455A64" stroke-width="1.5" />
-<rect x="20" y="540" width="1360" height="30" rx="8" ry="8" fill="#24292E" stroke="#24292E" stroke-width="1.5" />
-<rect x="20" y="560" width="1360" height="10" rx="0" ry="0" fill="#24292E" stroke="#24292E" stroke-width="1.5" />
-<text x="700" y="555" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">⚡  CI/CD Pipeline — GitHub Actions (.github/workflows/ci.yml)  —  déclenché sur chaque git push</text>
-<rect x="28" y="584" width="110" height="56" rx="6" ry="6" fill="#24292E" stroke="#444" stroke-width="1.5" />
-<text x="83" y="606" font-size="11" font-weight="bold" fill="#98D982" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">$ git push</text>
-<text x="83" y="624" font-size="10" font-weight="normal" fill="#7EC87E" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">origin main</text>
-<line x1="142" y1="612" x2="166" y2="612" stroke="#24292E" stroke-width="2" marker-end="url(#arrow_24292E)"/>
-<rect x="168" y="584" width="220" height="140" rx="7" ry="7" fill="#C8E6C9" stroke="#2E7D32" stroke-width="1.5" />
-<rect x="168" y="584" width="220" height="26" rx="0" ry="0" fill="#2E7D32" stroke="#2E7D32" stroke-width="1.5" />
-<text x="278" y="597" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">① JOB : lint</text>
-<text x="278" y="628" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">yamllint ansible/</text>
-<text x="278" y="646" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">yamllint monitoring/</text>
-<text x="278" y="664" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">yamllint k8s/</text>
-<text x="278" y="682" font-size="10" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Config : .yamllint</text>
-<text x="278" y="702" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">(line-length: 120)</text>
-<line x1="392" y1="654" x2="416" y2="654" stroke="#1565C0" stroke-width="2.5" marker-end="url(#arrow_1565C0)"/>
-<text x="404" y="644" font-size="9" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">OK ✓</text>
-<rect x="418" y="584" width="270" height="140" rx="7" ry="7" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5" />
-<rect x="418" y="584" width="270" height="26" rx="0" ry="0" fill="#1565C0" stroke="#1565C0" stroke-width="1.5" />
-<text x="553" y="597" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">② JOB : build-push</text>
-<text x="553" y="628" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">docker buildx build</text>
-<text x="553" y="646" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Login Docker Hub</text>
-<text x="553" y="664" font-size="11" font-weight="bold" fill="#1565C0" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Build + Push image</text>
-<rect x="428" y="686" width="250" height="30" rx="5" ry="5" fill="#2496ED" stroke="#2496ED" stroke-width="1.5" />
-<text x="553" y="701" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">🐳  lnanzotonlieu/iac-wordpress:latest → Docker Hub</text>
-<line x1="692" y1="654" x2="716" y2="654" stroke="#4A148C" stroke-width="2.5" marker-end="url(#arrow_4A148C)"/>
-<text x="704" y="644" font-size="9" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">OK ✓</text>
-<rect x="718" y="584" width="250" height="140" rx="7" ry="7" fill="#E1BEE7" stroke="#4A148C" stroke-width="1.5" />
-<rect x="718" y="584" width="250" height="26" rx="0" ry="0" fill="#4A148C" stroke="#4A148C" stroke-width="1.5" />
-<text x="843" y="597" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">③ JOB : validate</text>
-<text x="843" y="628" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">yamllint k8s/manifests</text>
-<text x="843" y="646" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Vérifie syntaxe YAML</text>
-<text x="843" y="664" font-size="11" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Pas de cluster requis</text>
-<text x="843" y="682" font-size="10" font-weight="bold" fill="#4A148C" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Sans kubectl distant</text>
-<text x="843" y="702" font-size="10" font-weight="normal" fill="#455A64" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">(GitHub Actions public)</text>
-<rect x="972" y="584" width="198" height="140" rx="7" ry="7" fill="#C8E6C9" stroke="#2E7D32" stroke-width="1.5" />
-<text x="1071" y="620" font-size="24" font-weight="normal" fill="#111111" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">✅</text>
-<text x="1071" y="654" font-size="13" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Pipeline</text>
-<text x="1071" y="672" font-size="13" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">3 / 3 jobs</text>
-<text x="1071" y="692" font-size="13" font-weight="bold" fill="#2E7D32" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">réussis</text>
-<rect x="1174" y="584" width="198" height="140" rx="7" ry="7" fill="#24292E" stroke="#444" stroke-width="1.5" />
-<text x="1273" y="620" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">GitHub</text>
-<text x="1273" y="640" font-size="10" font-weight="normal" fill="#98D982" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">pilot-loicrich/</text>
-<text x="1273" y="656" font-size="12" font-weight="bold" fill="#98D982" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">iac-infra</text>
-<text x="1273" y="676" font-size="10" font-weight="normal" fill="#AAAAAA" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Conventional</text>
-<text x="1273" y="692" font-size="10" font-weight="normal" fill="#AAAAAA" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Commits  ·  14 sprints</text>
-</g>
-<rect x="920" y="512" width="450" height="22" rx="4" ry="4" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1.5" />
-<text x="956" y="523" font-size="10" font-weight="bold" fill="#1A237E" text-anchor="middle" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Légende :</text>
-<circle cx="1026" cy="523" r="5" fill="#00695C"/>
-<text x="1034" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Rôle Ansible</text>
-<circle cx="1088" cy="523" r="5" fill="#1565C0"/>
-<text x="1096" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Docker / CI/CD</text>
-<circle cx="1150" cy="523" r="5" fill="#4A148C"/>
-<text x="1158" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Kubernetes</text>
-<circle cx="1212" cy="523" r="5" fill="#E65100"/>
-<text x="1220" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Monitoring</text>
-<circle cx="1274" cy="523" r="5" fill="#2E7D32"/>
-<text x="1282" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">OK / Validé</text>
-<circle cx="1336" cy="523" r="5" fill="#5865F2"/>
-<text x="1344" y="523" font-size="9" font-weight="normal" fill="#455A64" text-anchor="start" dominant-baseline="central" dy="0" font-family="Arial, Helvetica, sans-serif">Discord</text>
+
+<rect x="0" y="0" width="1200" height="800" fill="#ffffff"/>
+
+<!-- LEFT ACTORS -->
+<rect class="box" x="24" y="118" width="150" height="80" rx="10"/>
+<circle cx="48" cy="150" r="9" fill="#00695C"/>
+<text class="lbl" x="66" y="148">Utilisateurs</text>
+<text class="sub" x="66" y="166">HTTP - :8080</text>
+
+<rect class="box" x="24" y="222" width="150" height="80" rx="10"/>
+<circle cx="48" cy="254" r="9" fill="#1A237E"/>
+<text class="lbl" x="66" y="252">GitHub</text>
+<text class="sub" x="66" y="270">Actions + Docker Hub</text>
+
+<rect class="box" x="24" y="326" width="150" height="80" rx="10"/>
+<circle cx="48" cy="358" r="9" fill="#4A148C"/>
+<text class="lbl" x="66" y="356">Discord</text>
+<text class="sub" x="66" y="374">Notifications</text>
+
+<line class="flow" x1="174" y1="158" x2="200" y2="160" marker-end="url(#ah)"/>
+<line class="flow" x1="174" y1="262" x2="200" y2="250" marker-end="url(#ah)"/>
+<line class="flow" x1="200" y1="430" x2="174" y2="366" marker-end="url(#ah)"/>
+
+<!-- MAIN : POSTE WINDOWS -->
+<rect class="lyr navy" x="200" y="74" width="976" height="600" rx="14"/>
+<text class="hdr" x="220" y="98" fill="#1A237E">POSTE WINDOWS 11 - environnement local (VirtualBox)</text>
+
+<rect class="soft" x="222" y="112" width="932" height="42" rx="8"/>
+<text class="sub" x="236" y="138" font-size="11.5"><tspan font-weight="700" fill="#1f2937">Provisioning IaC :</tspan>  Vagrant -&gt; VM  -  Ansible (4 roles : common - security - monitoring - webapp)  -  Terraform -&gt; inventaire</text>
+
+<!-- VM box -->
+<rect class="lyr blue" x="222" y="166" width="932" height="306" rx="12"/>
+<text class="hdr" x="240" y="188" fill="#1565C0">VM Ubuntu 22.04 - host-only 192.168.56.10 - Docker Compose (8 conteneurs)</text>
+
+<!-- app network -->
+<rect class="lyr teal" x="242" y="200" width="892" height="112" rx="10"/>
+<text class="hdr" x="258" y="220" fill="#00695C">Reseau applicatif</text>
+<rect class="box" x="320" y="232" width="220" height="64" rx="9"/>
+<text class="lbl" x="338" y="260">WordPress</text>
+<text class="sub" x="338" y="278">Apache - image durcie</text>
+<rect x="476" y="244" width="46" height="20" rx="10" fill="#E3F2FD"/><text class="port" x="486" y="258" fill="#1565C0">:80</text>
+<line class="flow" x1="548" y1="264" x2="612" y2="264" marker-end="url(#ah)"/>
+<text class="tiny" x="556" y="258">SQL</text>
+<rect class="box" x="620" y="232" width="220" height="64" rx="9"/>
+<text class="lbl" x="638" y="260">MariaDB 11</text>
+<text class="sub" x="638" y="278">base wordpress - PVC</text>
+<rect x="776" y="244" width="56" height="20" rx="10" fill="#E8F5E9"/><text class="port" x="786" y="258" fill="#2E7D32">:3306</text>
+
+<!-- supervision network -->
+<rect class="lyr purple" x="242" y="324" width="892" height="134" rx="10"/>
+<text class="hdr" x="258" y="344" fill="#4A148C">Reseau de supervision</text>
+<rect class="box" x="300" y="356" width="160" height="50" rx="9"/>
+<text class="lbl" x="316" y="380" font-size="12">Prometheus</text><text class="port" x="316" y="396" fill="#E65100">:9090</text>
+<line class="flow" x1="466" y1="381" x2="500" y2="381" marker-end="url(#ah)"/>
+<rect class="box" x="506" y="356" width="160" height="50" rx="9"/>
+<text class="lbl" x="522" y="380" font-size="12">Grafana</text><text class="port" x="522" y="396" fill="#E65100">:3000</text>
+<line class="flow" x1="672" y1="381" x2="706" y2="381" marker-end="url(#ah)"/>
+<rect class="box" x="712" y="356" width="200" height="50" rx="9"/>
+<text class="lbl" x="728" y="380" font-size="12">Alertmanager</text><text class="port" x="728" y="396" fill="#E65100">:9093</text>
+<line class="flow" x1="912" y1="381" x2="950" y2="381" marker-end="url(#ah)"/>
+<text class="sub" x="952" y="385" font-weight="700" fill="#4A148C">-&gt; relay -&gt; Discord</text>
+<rect x="300" y="418" width="180" height="26" rx="13" fill="#f8fafc" stroke="#e2e8f0"/><text class="sub" x="316" y="435">node-exporter <tspan class="port" fill="#E65100">:9100</tspan></text>
+<rect x="492" y="418" width="200" height="26" rx="13" fill="#f8fafc" stroke="#e2e8f0"/><text class="sub" x="508" y="435">mysqld-exporter <tspan class="port" fill="#E65100">:9104</tspan></text>
+<rect x="704" y="418" width="210" height="26" rx="13" fill="#f8fafc" stroke="#e2e8f0"/><text class="sub" x="720" y="435">discord-relay (Python) <tspan class="port" fill="#E65100">:9094</tspan></text>
+
+<!-- Kubernetes layer -->
+<rect class="lyr green" x="222" y="484" width="932" height="66" rx="12"/>
+<text class="hdr" x="240" y="506" fill="#2E7D32">Kubernetes (orchestration) - kubectl apply -f kubernetes/</text>
+<text class="sub" x="240" y="532" font-size="11.5">WordPress x2 replicas  -  Service NodePort :30080  -  MariaDB + PVC  -  Secret  -  HPA 2-&gt;10 (CPU 50%)</text>
+
+<!-- security bar -->
+<rect x="222" y="560" width="932" height="38" rx="9" fill="#FFF5F5" stroke="#B71C1C" stroke-dasharray="4 3"/>
+<text class="sub" x="238" y="584" font-size="11"><tspan font-weight="700" fill="#B71C1C">Securite :</tspan>  UFW deny par defaut - ports 22/80/443 - SSH hardening (no root, no password) - secrets hors depot (.env gitignore, Ansible Vault) - scan Trivy en CI</text>
+
+<text class="tiny" x="240" y="624">Prometheus scrute les metriques toutes les 15 s - le relay Python traduit l'alerte au format Discord (HTTP 204)</text>
+
+<!-- FOOTER -->
+<rect class="box" x="24" y="694" width="730" height="74" rx="10"/>
+<text class="lbl" x="42" y="718" font-size="12">Integration et livraison continues</text>
+<text class="sub" x="42" y="738" font-size="11">GitHub Actions : <tspan font-weight="700">lint</tspan> (yamllint + terraform validate) -&gt; <tspan font-weight="700">build</tspan> image WordPress</text>
+<text class="sub" x="42" y="754" font-size="11">-&gt; <tspan font-weight="700">push</tspan> Docker Hub (iac-wordpress) -&gt; <tspan font-weight="700">validate</tspan> manifests K8s + scan Trivy</text>
+
+<rect class="box" x="770" y="694" width="406" height="74" rx="10"/>
+<text class="lbl" x="788" y="718" font-size="12">Sauvegarde des donnees</text>
+<text class="sub" x="788" y="738" font-size="11">mariadb-dump -&gt; docker/backups</text>
+<text class="sub" x="788" y="754" font-size="11">script backup-mariadb.sh - restauration testee</text>
+
+<text class="cap" x="24" y="788">Chaque libelle correspond a un fichier reel du depot - Vagrantfile - ansible/ - terraform/ - docker-compose.yml - kubernetes/ - .github/workflows/ci.yml</text>
 </svg>
