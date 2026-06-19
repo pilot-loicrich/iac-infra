@@ -14,6 +14,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   web:
     image: lnanzotonlieu/iac-wordpress:latest
@@ -102,8 +103,6 @@ services:
       - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
     restart: unless-stopped
-    depends_on:
-      - discord-relay
 
   discord-relay:
     image: python:3.11-alpine
@@ -121,5 +120,8 @@ volumes:
   wp_data:
     driver: local
   prometheus_data:
+    driver: local
   grafana_data:
+    driver: local
   alertmanager_data:
+    driver: local
